@@ -29,7 +29,7 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
 		FixedWindowRateLimiter.Decision decision = rateLimits.loginDecision(request.getRemoteAddr(), request.getParameter("email"));
 		if (!decision.allowed()) {
 			response.setHeader("Retry-After", String.valueOf(decision.retryAfterSeconds()));
-			response.sendRedirect("/login?rateLimited");
+			RelativeRedirects.send(response, "/login?rateLimited");
 			return;
 		}
 		filterChain.doFilter(request, response);

@@ -16,6 +16,7 @@ import com.smartev.assistant.security.ActiveAccountFilter;
 import com.smartev.assistant.security.CspNonceFilter;
 import com.smartev.assistant.security.LoginRateLimitFilter;
 import com.smartev.assistant.security.RateLimitedAuthenticationFailureHandler;
+import com.smartev.assistant.security.RelativeRedirects;
 import com.smartev.assistant.security.RoleAwareAuthenticationSuccessHandler;
 import com.smartev.assistant.security.SecurityErrorWriter;
 
@@ -33,6 +34,7 @@ public class SecurityConfig {
 			SecurityErrorWriter errorWriter,
 			@Value("${app.security.require-https:false}") boolean requireHttps) throws Exception {
 		LoginUrlAuthenticationEntryPoint pageEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
+		pageEntryPoint.setFavorRelativeUris(true);
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/", "/register", "/login", "/api/auth/register", "/api/health",
@@ -48,7 +50,8 @@ public class SecurityConfig {
 				.permitAll())
 			.logout(logout -> logout
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
+				.logoutSuccessHandler((request, response, authentication) ->
+					RelativeRedirects.send(response, "/login?logout"))
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID"))
 			.exceptionHandling(exceptions -> exceptions

@@ -22,6 +22,6 @@ public class RateLimitedAuthenticationFailureHandler implements AuthenticationFa
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		rateLimits.recordLoginFailure(request.getRemoteAddr(), request.getParameter("email"));
-		response.sendRedirect("/login?error");
+		RelativeRedirects.send(response, "/login?error");
 	}
 }

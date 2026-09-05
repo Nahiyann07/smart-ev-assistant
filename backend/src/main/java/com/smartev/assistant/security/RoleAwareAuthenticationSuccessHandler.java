@@ -24,6 +24,6 @@ public class RoleAwareAuthenticationSuccessHandler implements AuthenticationSucc
 		boolean admin = authentication.getAuthorities().stream()
 				.anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
 		rateLimits.recordLoginSuccess(request.getRemoteAddr(), request.getParameter("email"));
-		response.sendRedirect(admin ? "/admin" : "/dashboard");
+		RelativeRedirects.send(response, admin ? "/admin" : "/dashboard");
 	}
 }

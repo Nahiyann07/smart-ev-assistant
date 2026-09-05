@@ -51,7 +51,7 @@ public class ActiveAccountFilter extends OncePerRequestFilter {
 				revoke(request);
 				if (request.getRequestURI().startsWith("/api/"))
 					errors.write(response, request.getRequestURI(), 401, "ACCOUNT_DISABLED", "This account is no longer active");
-				else response.sendRedirect("/login?disabled");
+				else RelativeRedirects.send(response, "/login?disabled");
 				return;
 			}
 		} catch (DataAccessException exception) {
