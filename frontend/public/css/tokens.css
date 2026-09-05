@@ -1,0 +1,90 @@
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/barlow-condensed-500.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/barlow-condensed-600.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/barlow-condensed-700.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-400-700.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --void: #050505;
+  --canvas: #0a0909;
+  --surface: #141110;
+  --surface-high: #1d1715;
+  --surface-soft: #241b18;
+  --line: #3a2d28;
+  --line-bright: #5a4036;
+  --text: #f7f2ee;
+  --text-muted: #a79e98;
+  --text-dim: #7e746e;
+  --ember: #ff4d1f;
+  --ember-hot: #ff7138;
+  --ember-deep: #b92b10;
+  --on-ember: #180603;
+  --available: #56d98b;
+  --occupied: #f3b94f;
+  --maintenance: #66aef7;
+  --danger: #ff625c;
+  --focus: #ffb69a;
+  --under-maintenance: var(--maintenance);
+  --out-of-service: var(--danger);
+
+  /* Compatibility aliases keep existing UI contracts stable. */
+  --ink: var(--text);
+  --ink-muted: var(--text-muted);
+  --ink-dim: var(--text-dim);
+  --obsidian: var(--void);
+  --dashboard: var(--canvas);
+  --steel: var(--line);
+  --steel-light: var(--line-bright);
+  --signal: var(--ember);
+  --signal-strong: var(--ember-hot);
+  --signal-ink: var(--on-ember);
+
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-ui: "Manrope", "Segoe UI Variable", "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);
+  --shadow-panel: 0 28px 90px rgba(0, 0, 0, .42);
+  --shadow-ember: 0 16px 46px rgba(255, 77, 31, .18);
+  --radius-sm: 3px;
+  --radius-control: 7px;
+  --radius-panel: 12px;
+  --content: 1240px;
+  --header-height: 76px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 104px;
+}

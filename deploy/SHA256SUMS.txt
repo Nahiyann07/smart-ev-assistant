@@ -1,0 +1,1 @@
+692a8522591dd19b20978bb96a844c5d22ed380aace3cce9064b57064158a944  smart-ev-assistant.jar

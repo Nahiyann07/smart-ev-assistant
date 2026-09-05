@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Smart EV Assistant",
+    "description": "Session and CSRF-aware verification flow. Run Get login page before a login or mutation. Postman retains the JSESSIONID cookie automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "csrf", "value": "" },
+    { "key": "driverEmail", "value": "" },
+    { "key": "driverPassword", "value": "" },
+    { "key": "adminEmail", "value": "" },
+    { "key": "adminPassword", "value": "" },
+    { "key": "stationId", "value": "1" },
+    { "key": "reviewId", "value": "1" },
+    { "key": "reportId", "value": "1" },
+    { "key": "userId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "01 Authentication",
+      "item": [
+        {
+          "name": "Get login page and CSRF",
+          "request": { "method": "GET", "url": "{{baseUrl}}/login" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('login page is available', () => pm.response.to.have.status(200));", "const match = pm.response.text().match(/name=\"_csrf\" value=\"([^\"]+)\"/);", "pm.expect(match, 'CSRF token').to.not.equal(null);", "pm.collectionVariables.set('csrf', match[1]);"] } }]
+        },
+        {
+          "name": "Register driver",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Postman Driver\",\n  \"email\": \"postman.driver@example.com\",\n  \"password\": \"Charge123\"\n}" }, "url": "{{baseUrl}}/api/auth/register" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('created or already exists', () => pm.expect([201, 409]).to.include(pm.response.code));"] } }]
+        },
+        {
+          "name": "Login driver",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }], "body": { "mode": "urlencoded", "urlencoded": [{ "key": "email", "value": "{{driverEmail}}" }, { "key": "password", "value": "{{driverPassword}}" }, { "key": "_csrf", "value": "{{csrf}}" }] }, "url": "{{baseUrl}}/login" },
+          "event": [{ "listen": "test", "script": { "exec": ["pm.test('login redirects', () => pm.expect([200, 302]).to.include(pm.response.code));"] } }]
+        },
+        { "name": "Current user", "request": { "method": "GET", "url": "{{baseUrl}}/api/auth/me" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('authenticated', () => pm.response.to.have.status(200));", "pm.expect(pm.response.json()).to.not.have.property('passwordHash');"] } }] }
+      ]
+    },
+    {
+      "name": "02 Stations and recommendations",
+      "item": [
+        { "name": "Search stations", "request": { "method": "GET", "url": "{{baseUrl}}/api/stations?city=Kochi&availableOnly=true&sort=rating&page=0&size=12" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('stable page response', () => { pm.response.to.have.status(200); const json=pm.response.json(); pm.expect(json).to.have.keys('content','page','size','totalElements','totalPages','first','last'); });", "const first=pm.response.json().content[0]; if(first) pm.collectionVariables.set('stationId', first.id);"] } }] },
+        { "name": "Station details", "request": { "method": "GET", "url": "{{baseUrl}}/api/stations/{{stationId}}" } },
+        { "name": "Compute route", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\"stationId\":{{stationId}},\"originLatitude\":8.52,\"originLongitude\":76.93}" }, "url": "{{baseUrl}}/api/routes" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('route succeeds or is intentionally unavailable', () => pm.expect([200,503]).to.include(pm.response.code));"] } }] },
+        { "name": "Reviews", "request": { "method": "GET", "url": "{{baseUrl}}/api/stations/{{stationId}}/reviews" } },
+        { "name": "Recommendations without location", "request": { "method": "GET", "url": "{{baseUrl}}/api/recommendations" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('score reasons are exposed', () => { pm.response.to.have.status(200); const items=pm.response.json(); if(items.length) pm.expect(items[0]).to.have.keys('score','breakdown','reasons'); });"] } }] },
+        { "name": "Recommendations with location", "request": { "method": "GET", "url": "{{baseUrl}}/api/recommendations?latitude=9.9816&longitude=76.2756" } }
+      ]
+    },
+    {
+      "name": "03 Driver workflow",
+      "item": [
+        { "name": "Add favourite", "request": { "method": "POST", "header": [{ "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "url": "{{baseUrl}}/api/favourites/{{stationId}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('favourite added or duplicate reported', () => pm.expect([201,409]).to.include(pm.response.code));"] } }] },
+        { "name": "List favourites", "request": { "method": "GET", "url": "{{baseUrl}}/api/favourites" } },
+        { "name": "Create review", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\"rating\":5,\"comment\":\"Reliable access and clear bay markings.\"}" }, "url": "{{baseUrl}}/api/stations/{{stationId}}/reviews" }, "event": [{ "listen": "test", "script": { "exec": ["if(pm.response.code===201) pm.collectionVariables.set('reviewId', pm.response.json().id);", "pm.test('review created or duplicate reported', () => pm.expect([201,409]).to.include(pm.response.code));"] } }] },
+        { "name": "Create fault report", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\"issueType\":\"CHARGER_NOT_WORKING\",\"description\":\"Connector two did not start a session.\"}" }, "url": "{{baseUrl}}/api/stations/{{stationId}}/reports" }, "event": [{ "listen": "test", "script": { "exec": ["pm.response.to.have.status(201);", "pm.collectionVariables.set('reportId', pm.response.json().id);"] } }] },
+        { "name": "My reports", "request": { "method": "GET", "url": "{{baseUrl}}/api/users/me/reports" } },
+        { "name": "My profile", "request": { "method": "GET", "url": "{{baseUrl}}/api/users/me/profile" } },
+        { "name": "Remove favourite", "request": { "method": "DELETE", "header": [{ "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "url": "{{baseUrl}}/api/favourites/{{stationId}}" } }
+      ]
+    },
+    {
+      "name": "04 Admin workflow",
+      "description": "Set the adminEmail and adminPassword collection variables from your environment-driven demo account, then get a fresh login page before running this folder.",
+      "item": [
+        { "name": "Admin dashboard", "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/dashboard" } },
+        { "name": "List stations", "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/stations" } },
+        { "name": "List pending reports", "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/reports?status=PENDING" } },
+        { "name": "Resolve report", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\"status\":\"RESOLVED\"}" }, "url": "{{baseUrl}}/api/admin/reports/{{reportId}}" } },
+        { "name": "List users", "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/users" } },
+        { "name": "Update station status", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "X-CSRF-TOKEN", "value": "{{csrf}}" }], "body": { "mode": "raw", "raw": "{\"status\":\"AVAILABLE\",\"availablePorts\":2,\"outOfServicePorts\":0}" }, "url": "{{baseUrl}}/api/admin/stations/{{stationId}}/status" } }
+      ]
+    }
+  ]
+}

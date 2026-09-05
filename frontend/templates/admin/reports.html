@@ -1,0 +1,6 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/layout :: head('Report queue')}"></head><body>
+<nav th:replace="~{fragments/layout :: appNav}"></nav><main class="shell page" id="main-content" data-admin-page="reports">
+<header class="page-header"><div><p class="eyebrow">Incident workflow</p><h1>Report queue</h1><p>Verify incidents and leave a complete audit trail.</p></div><label>Status<select data-report-filter><option value="">All reports</option><option value="PENDING">Pending</option><option value="RESOLVED">Resolved</option><option value="REJECTED">Rejected</option></select></label></header>
+<nav class="subnav" aria-label="Administration"><a href="/admin">Overview</a><a href="/admin/stations">Stations</a><a href="/admin/reports" aria-current="page">Reports</a><a href="/admin/users">Users</a></nav>
+<section class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>Issue</th><th>Station</th><th>Reporter</th><th>Status</th><th>Opened</th><th>Action</th></tr></thead><tbody data-admin-reports><tr><td colspan="6">Loading reports…</td></tr></tbody></table></div></section>
+</main><div th:replace="~{fragments/layout :: toast}"></div><script type="module" th:src="@{/js/pages/admin.js}" th:attr="nonce=${cspNonce}"></script></body></html>

@@ -1,0 +1,20 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Station console')}"></head><body>
+<nav th:replace="~{fragments/layout :: appNav}"></nav>
+<main class="shell page" id="main-content" data-admin-page="stations">
+  <header class="page-header"><div><p class="eyebrow">Network assets</p><h1>Station console</h1><p>Create, inspect, update, and retire charging locations.</p></div></header>
+  <nav class="subnav" aria-label="Administration"><a href="/admin">Overview</a><a href="/admin/stations" aria-current="page">Stations</a><a href="/admin/reports">Reports</a><a href="/admin/users">Users</a></nav>
+  <section class="panel"><div class="section-heading"><div><p class="eyebrow">Asset editor</p><h2 data-station-form-title>Add station</h2></div><button class="button button--ghost" type="button" data-reset-station>Clear</button></div>
+    <form class="form-grid" data-station-form novalidate>
+      <input type="hidden" name="id"><label>Name<input name="name" maxlength="150" required></label><label>City<input name="city" maxlength="100" required></label>
+      <label class="form-grid__wide">Address<input name="address" maxlength="255" required></label>
+      <label>Latitude<input name="latitude" type="number" min="-90" max="90" step="0.000001"></label><label>Longitude<input name="longitude" type="number" min="-180" max="180" step="0.000001"></label>
+      <label>Charger type<select name="chargerType"><option value="AC">AC</option><option value="DC_FAST">DC fast</option></select></label><label>Speed (kW)<input name="chargingSpeedKw" type="number" min="0.01" step="0.01" required></label>
+      <label>Total ports<input name="totalPorts" type="number" min="1" required></label><label>Available ports<input name="availablePorts" type="number" min="0" required></label><label>Out of service<input name="outOfServicePorts" type="number" min="0" required></label>
+      <label>Status<select name="status"><option>AVAILABLE</option><option>OCCUPIED</option><option>UNDER_MAINTENANCE</option><option>OUT_OF_SERVICE</option></select></label>
+      <label>Operating hours<input name="operatingHours" maxlength="100" value="24 hours" required></label><label class="form-grid__wide">Description<textarea name="description" rows="3" required></textarea></label>
+      <div class="form-error form-grid__wide" data-form-error role="alert" hidden></div><div class="form-grid__wide action-row"><button class="button button--primary" type="submit">Save station</button></div>
+    </form>
+  </section>
+  <section class="panel table-panel"><div class="section-heading"><div><p class="eyebrow">Inventory</p><h2>Active stations</h2></div></div><div class="table-scroll"><table><thead><tr><th>Station</th><th>Profile</th><th>Ports</th><th>Status</th><th>Actions</th></tr></thead><tbody data-admin-stations><tr><td colspan="5">Loading stations…</td></tr></tbody></table></div></section>
+</main><div th:replace="~{fragments/layout :: toast}"></div><script type="module" th:src="@{/js/pages/admin.js}" th:attr="nonce=${cspNonce}"></script></body></html>

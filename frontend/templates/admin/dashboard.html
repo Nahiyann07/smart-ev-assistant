@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Administration')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: appNav}"></nav>
+<main class="shell page" id="main-content">
+  <header class="page-header" data-reveal>
+    <div><p class="eyebrow">Control room</p><h1>Administration</h1><p>Operational truth, without decorative noise.</p></div>
+    <span class="status status--available">System online</span>
+  </header>
+  <nav class="subnav" aria-label="Administration">
+    <a href="/admin" aria-current="page">Overview</a><a href="/admin/stations">Stations</a>
+    <a href="/admin/reports">Reports</a><a href="/admin/users">Users</a>
+  </nav>
+  <section class="metric-grid" data-admin-stats aria-live="polite">
+    <article class="metric-card skeleton"><span></span><strong></strong></article>
+    <article class="metric-card skeleton"><span></span><strong></strong></article>
+    <article class="metric-card skeleton"><span></span><strong></strong></article>
+    <article class="metric-card skeleton"><span></span><strong></strong></article>
+  </section>
+  <section class="panel" data-reveal>
+    <div class="section-heading"><div><p class="eyebrow">Operating brief</p><h2>Keep the network useful</h2></div></div>
+    <p class="muted">Availability is simulated database state. Use the station console to update ports atomically and the report queue to close verified incidents.</p>
+    <div class="action-row"><a class="button button--primary" href="/admin/stations">Manage stations</a><a class="button button--ghost" href="/admin/reports">Open report queue</a></div>
+  </section>
+</main>
+<div th:replace="~{fragments/layout :: toast}"></div>
+<script type="module" th:src="@{/js/pages/admin.js}" th:attr="nonce=${cspNonce}"></script>
+</body></html>

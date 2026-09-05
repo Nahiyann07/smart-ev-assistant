@@ -1,0 +1,23 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:fragment="head(title)">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505"><meta name="csrf-token" th:content="${_csrf?.token}"><meta name="csrf-header" th:content="${_csrf?.headerName}">
+  <title th:text="${title} + ' · Smart EV Assistant'">Smart EV Assistant</title>
+  <link rel="preload" th:href="@{/fonts/barlow-condensed-600.woff2}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" th:href="@{/fonts/manrope-400-700.woff2}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" th:href="@{/css/tokens.css}"><link rel="stylesheet" th:href="@{/css/base.css}"><link rel="stylesheet" th:href="@{/css/components.css}"><link rel="stylesheet" th:href="@{/css/pages/app.css}">
+  <script defer th:src="@{/js/vendor/gsap-3.15.0.min.js}" th:attr="nonce=${cspNonce}"></script><script defer th:src="@{/js/vendor/ScrollTrigger-3.15.0.min.js}" th:attr="nonce=${cspNonce}"></script><script type="module" th:src="@{/js/app-shell.js}" th:attr="nonce=${cspNonce}"></script>
+</head><body>
+<header class="site-header" th:fragment="publicNav"><div class="nav shell">
+  <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="brand-wordmark">Smart EV</span></a>
+  <button class="mobile-nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-nav-toggle><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <nav class="nav-links" aria-label="Primary" data-nav-links><a href="#system">The system</a><a href="/login">Sign in</a><a class="button" href="/register">Start driving</a></nav>
+</div></header>
+<header class="site-header" th:fragment="appNav"><div class="nav shell">
+  <a class="brand" href="/dashboard"><span class="brand-mark" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="brand-wordmark">Smart EV</span></a>
+  <button class="mobile-nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-nav-toggle><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <nav class="nav-links" aria-label="Primary" data-nav-links><a href="/dashboard">Dashboard</a><a href="/stations">Find stations</a><a href="/recommendations">Recommended</a><a href="/favourites">Favourites</a><a href="/reports">Reports</a><a href="/profile">Profile</a><form method="post" th:action="@{/logout}"><button class="nav-link-button" type="submit">Sign out</button></form></nav>
+</div></header>
+<footer class="site-footer" th:fragment="footer"><div class="site-footer__inner shell"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="brand-wordmark">Smart EV</span></a><span>Status data is simulated for demonstration.</span></div></footer>
+<div class="toast" role="status" aria-live="polite" th:fragment="toast" data-toast></div>
+<div class="route-veil" aria-hidden="true" data-route-veil></div>
+</body></html>

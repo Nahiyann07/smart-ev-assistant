@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+	<!-- Spring owns these injected singleton collaborators; retaining their references is constructor injection, not representation exposure. -->
+	<Match>
+		<Package name="~com\.smartev\.assistant\.(config|controller|service).*"/>
+		<Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+	</Match>
+	<!-- This security filter retains a Spring-managed, stateless collaborator supplied through constructor injection. -->
+	<Match>
+		<Class name="com.smartev.assistant.security.ActiveAccountFilter"/>
+		<Field name="errors"/>
+		<Bug pattern="EI_EXPOSE_REP2"/>
+	</Match>
+	<!-- JPA associations intentionally expose aggregate references inside the transactional domain layer. Entities are never serialized directly. -->
+	<Match>
+		<Package name="com.smartev.assistant.entity"/>
+		<Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+	</Match>
+	<!-- HttpSecurity.build() and the Spring DSL declare checked Exception by contract. -->
+	<Match>
+		<Class name="com.smartev.assistant.config.SecurityConfig"/>
+		<Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"/>
+	</Match>
+	<!-- These accessors belong to unrelated immutable response/principal types and are unambiguous at call sites. -->
+	<Match>
+		<Class name="com.smartev.assistant.dto.response.ReportResponse"/>
+		<Bug pattern="NM_CONFUSING"/>
+	</Match>
+</FindBugsFilter>

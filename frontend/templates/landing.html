@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Drive with confidence')}"></head>
+<body class="landing">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="intro-loader" data-intro-loader role="status" aria-live="polite">
+  <div class="intro-loader__mark"><span class="intro-loader__ring" aria-hidden="true"></span><span class="intro-loader__label">Smart EV / Powering route</span></div>
+</div>
+<header th:replace="~{fragments/layout :: publicNav}"></header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media" data-parallax aria-hidden="true">
+      <video data-hero-video autoplay muted loop playsinline preload="metadata" th:poster="@{/media/hero-poster.webp}"><source th:src="@{/media/smart-ev-hero.mp4}" type="video/mp4"></video>
+    </div>
+    <div class="hero-grid shell">
+      <div class="hero-copy">
+        <p class="eyebrow" data-hero-kicker>Intelligent charging discovery / 2026</p>
+        <h1 id="hero-title"><span class="mask-line"><span data-hero-line>Charge.</span></span><span class="mask-line"><span data-hero-line>Move.</span></span><span class="mask-line"><span data-hero-line>Arrive.</span></span></h1>
+        <div data-hero-copy><p>Find a charger from the database-managed network, understand simulated availability, and choose a route with reasons you can trust.</p><div class="hero-actions"><a class="button" href="/register" data-magnetic>Explore the network</a><a class="button secondary" href="#system">See the system</a></div></div>
+      </div>
+      <aside class="hero-telemetry" aria-label="Network telemetry preview">
+        <p class="eyebrow">Live system preview</p>
+        <div class="hero-telemetry__row" data-telemetry><span>STATION STATE</span><strong>SIMULATED</strong></div>
+        <div class="hero-telemetry__row" data-telemetry><span>FAST CHARGING</span><strong>UP TO 180 kW</strong></div>
+        <div class="hero-telemetry__row" data-telemetry><span>RANKING LOGIC</span><strong>100% EXPLAINED</strong></div>
+      </aside>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">SCROLL TO EXPLORE</div>
+  </section>
+
+  <section class="value-strip" aria-label="Product capabilities">
+    <article class="value-item" data-reveal><span class="value-item__index">01 / SIGNAL</span><h2>Availability at a glance</h2><p>Operational, occupied, maintenance and offline states stay visually distinct.</p></article>
+    <article class="value-item" data-reveal><span class="value-item__index">02 / LOGIC</span><h2>Every score explained</h2><p>Availability, reviews, speed and optional distance—no black-box claims.</p></article>
+    <article class="value-item" data-reveal><span class="value-item__index">03 / COMMUNITY</span><h2>Confidence from drivers</h2><p>Save stations, review a visit and flag problems for an administrator.</p></article>
+  </section>
+
+  <section class="landing-section shell" id="system">
+    <div class="landing-section-grid"><div data-reveal><p class="eyebrow">One connected journey</p><h2>Range anxiety becomes a clear next stop.</h2><p class="muted">Location is always optional. Search and recommendations continue to work when you prefer not to share it.</p></div>
+      <div class="process"><article class="process-step" data-reveal><span class="numeric">01</span><div><h3>Discover</h3><p>Search by place, connector, charging speed, rating, or port availability.</p></div></article><article class="process-step" data-reveal><span class="numeric">02</span><div><h3>Decide</h3><p>Compare status and transparent recommendation scores before you move.</p></div></article><article class="process-step" data-reveal><span class="numeric">03</span><div><h3>Contribute</h3><p>Review the visit, save a favourite or report a fault for follow-up.</p></div></article></div>
+    </div>
+  </section>
+
+  <section class="proof-stage shell" aria-labelledby="proof-title"><div class="proof-frame" data-reveal><div class="proof-frame__copy"><p class="eyebrow">Transparent by design</p><h2 id="proof-title">A recommendation you can defend.</h2><p class="muted">The assistant combines port availability, driver rating, charging speed and optional distance. Each result exposes its full score breakdown.</p><a class="button secondary" href="/register">Create your driver account</a></div><div class="proof-frame__gauge" aria-label="Example recommendation score 92 out of 100"><div class="proof-score"><strong><span data-counter="92">92</span></strong></div></div></div></section>
+  <section class="landing-cta shell" data-reveal><p class="eyebrow">The next stop starts here</p><h2>Find power without breaking your rhythm.</h2><a class="button" href="/register" data-magnetic>Enter Smart EV</a></section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script type="module" th:src="@{/js/motion.js}" th:attr="nonce=${cspNonce}"></script>
+<script type="module" th:src="@{/js/pages/landing.js}" th:attr="nonce=${cspNonce}"></script>
+</body>
+</html>

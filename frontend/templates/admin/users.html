@@ -1,0 +1,6 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/layout :: head('User access')}"></head><body>
+<nav th:replace="~{fragments/layout :: appNav}"></nav><main class="shell page" id="main-content" data-admin-page="users">
+<header class="page-header"><div><p class="eyebrow">Access control</p><h1>User access</h1><p>Disable compromised accounts without erasing their history.</p></div></header>
+<nav class="subnav" aria-label="Administration"><a href="/admin">Overview</a><a href="/admin/stations">Stations</a><a href="/admin/reports">Reports</a><a href="/admin/users" aria-current="page">Users</a></nav>
+<section class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>User</th><th>Role</th><th>Joined</th><th>Access</th><th>Action</th></tr></thead><tbody data-admin-users><tr><td colspan="5">Loading users…</td></tr></tbody></table></div></section>
+</main><div th:replace="~{fragments/layout :: toast}"></div><script type="module" th:src="@{/js/pages/admin.js}" th:attr="nonce=${cspNonce}"></script></body></html>

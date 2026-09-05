@@ -1,0 +1,4 @@
+import { api, emptyState, stationCard, toast } from '../api.js'; import { revealNew } from '../motion.js';
+const root = document.querySelector('[data-favourites]');
+async function load() { try { const items = await api('/api/favourites'); root.innerHTML = items.length ? items.map(item => stationCard(item, { removable: true })).join('') : emptyState('Nothing saved yet', 'Favourite stations appear here for one-tap access.', '<a class="button" href="/stations">Find stations</a>'); revealNew(root); } catch (error) { root.innerHTML = emptyState('Could not load favourites', error.message); } }
+root?.addEventListener('click', async event => { const button = event.target.closest('[data-remove-favourite]'); if (!button) return; try { await api(`/api/favourites/${button.dataset.removeFavourite}`, { method: 'DELETE' }); toast('Removed from favourites.', 'success'); load(); } catch (error) { toast(error.message, 'error'); } }); load();
