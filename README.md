@@ -47,16 +47,16 @@ The demo uses H2 and six sample Kerala stations. H2 has test scope, so enable th
 ```powershell
 $env:JAVA_HOME = 'C:\path\to\jdk-21'
 $env:SPRING_PROFILES_ACTIVE = 'demo'
-$env:DEMO_SEED_ENABLED = 'true'
-$env:DEMO_DRIVER_EMAIL = 'choose-a-driver-email'
-$env:DEMO_DRIVER_PASSWORD = 'choose-a-driver-password'
-$env:DEMO_ADMIN_EMAIL = 'choose-an-admin-email'
-$env:DEMO_ADMIN_PASSWORD = 'choose-an-admin-password'
+$env:PREVIEW_SEED_ENABLED = 'true'
+$env:PREVIEW_DRIVER_EMAIL = 'choose-a-driver-email'
+$env:PREVIEW_DRIVER_PASSWORD = 'choose-a-driver-password'
+$env:PREVIEW_ADMIN_EMAIL = 'choose-an-admin-email'
+$env:PREVIEW_ADMIN_PASSWORD = 'choose-an-admin-password'
 cd backend
 .\mvnw.cmd spring-boot:run '-Dspring-boot.run.useTestClasspath=true'
 ```
 
-Demo accounts are created only from those environment variables; no reusable passwords are compiled into the application. Passwords must contain at least eight characters and the two email addresses must differ. The in-memory database is erased when the process stops. Never enable the `demo` profile in production.
+Preview accounts are created only from those environment variables; no reusable passwords are compiled into the application. Passwords must contain at least eight characters and the two email addresses must differ. The in-memory demo database is erased when the process stops. Keep preview seeding disabled for any real production dataset.
 
 ## Optional Google Maps and routing
 

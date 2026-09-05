@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.smartev.assistant.dto.request.StationRequest;
@@ -22,15 +21,14 @@ import com.smartev.assistant.repository.StationRepository;
 import com.smartev.assistant.repository.UserRepository;
 
 @Configuration
-@Profile("demo")
 public class DemoDataConfiguration {
 	@Bean
-	@ConditionalOnProperty(prefix = "app.demo", name = "seed-enabled", havingValue = "true")
+	@ConditionalOnProperty(prefix = "app.preview", name = "seed-enabled", havingValue = "true")
 	ApplicationRunner demoData(UserRepository users, StationRepository stations, PasswordEncoder encoder,
-			@Value("${app.demo.driver-email:}") String driverEmail,
-			@Value("${app.demo.driver-password:}") String driverPassword,
-			@Value("${app.demo.admin-email:}") String adminEmail,
-			@Value("${app.demo.admin-password:}") String adminPassword) {
+			@Value("${app.preview.driver-email:}") String driverEmail,
+			@Value("${app.preview.driver-password:}") String driverPassword,
+			@Value("${app.preview.admin-email:}") String adminEmail,
+			@Value("${app.preview.admin-password:}") String adminPassword) {
 		return arguments -> {
 			validateDemoCredentials(driverEmail, driverPassword, adminEmail, adminPassword);
 			String normalizedDriverEmail = driverEmail.trim().toLowerCase(Locale.ROOT);
