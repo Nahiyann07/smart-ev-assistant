@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
@@ -33,8 +32,6 @@ public class SecurityConfig {
 			CspNonceFilter cspNonceFilter,
 			SecurityErrorWriter errorWriter,
 			@Value("${app.security.require-https:false}") boolean requireHttps) throws Exception {
-		LoginUrlAuthenticationEntryPoint pageEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
-		pageEntryPoint.setFavorRelativeUris(true);
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/", "/register", "/login", "/api/auth/register", "/api/health",
@@ -63,7 +60,7 @@ public class SecurityConfig {
 				if (request.getRequestURI().startsWith("/api/")) {
 					errorWriter.write(response, request.getRequestURI(), 401, "AUTHENTICATION_REQUIRED", "Sign in to continue");
 				} else {
-					pageEntryPoint.commence(request, response, exception);
+					RelativeRedirects.send(response, "/login");
 				}
 			}))
 			.addFilterBefore(cspNonceFilter, CsrfFilter.class)
